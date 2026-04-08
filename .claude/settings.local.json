@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Read(//private/tmp/**)",
+      "Bash(rm -rf gac-scaffold)",
+      "Bash(shopt -s dotglob)",
+      "Bash(cp -R /tmp/gac-scaffold/. /Users/alexandreboyer/IdeaProjects/GetAColoc/)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

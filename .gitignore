@@ -1,39 +1,26 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-/dist
-
-# misc
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# IDEs and Editors
-.idea/
-.vscode/
-*.swp
-*.swo
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
 
-# Vercel / Next.js (if eventually used)
-.next
-out/
-build/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

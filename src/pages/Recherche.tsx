@@ -2,31 +2,30 @@ import { useState } from 'react';
 import { useLogements } from '../hooks/useLogements';
 import { useAddCandidature } from '../hooks/useCandidatures';
 import { useMesGroupes } from '../hooks/useGroupes';
-import LogementCard from '../components/logement/LogementCard';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import EmptyState from '../components/common/EmptyState';
 import Modal from '../components/common/Modal';
 import Button from '../components/common/Button';
+import EmptyState from '../components/common/EmptyState';
 import type { Logement } from '../types';
 
+const meubleFilters = ['Tous', 'Meublé'];
+
 export default function Recherche() {
-  const [ville, setVille] = useState('');
+  const [query, setQuery] = useState('');
+  const [meubleTab, setMeubleTab] = useState('Tous');
   const [prixMax, setPrixMax] = useState('');
-  const [meuble, setMeuble] = useState<boolean | undefined>(undefined);
   const [selectedLogement, setSelectedLogement] = useState<Logement | null>(null);
   const [message, setMessage] = useState('');
   const [selectedGroupeId, setSelectedGroupeId] = useState<number | ''>('');
 
   const filters = {
-    ville: ville || undefined,
+    ville: query || undefined,
     prix_max: prixMax ? parseInt(prixMax) : undefined,
-    meuble: meuble,
+    meuble: meubleTab === 'Meublé' ? true : undefined,
   };
 
-  const { data: logements, isLoading } = useLogements(filters);
+  const { data: logements, isLoading, error } = useLogements(filters);
   const { data: mesGroupes } = useMesGroupes();
   const addCandidature = useAddCandidature(selectedLogement?.id_logement ?? 0);
-
   const monGroupe = mesGroupes?.[0];
 
   const handlePostuler = async () => {
@@ -41,65 +40,104 @@ export default function Recherche() {
   };
 
   return (
-    <div className="px-4 pt-8 pb-4">
-      <h1 className="font-syne font-black text-dark-blue text-2xl mb-6">Recherche</h1>
+    <div className="min-h-screen bg-white">
+      <header className="bg-dark-blue px-6 pt-10 pb-6">
+        <h1 className="font-syne font-extrabold text-2xl text-white">Recherche logement</h1>
 
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6 space-y-3">
-        <input
-          type="text"
-          placeholder="Ville..."
-          value={ville}
-          onChange={e => setVille(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-        />
-        <input
-          type="number"
-          placeholder="Prix max (€/mois)"
-          value={prixMax}
-          onChange={e => setPrixMax(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-        />
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-syne text-dark-blue">Meublé uniquement</span>
-          <button
-            type="button"
-            onClick={() => setMeuble(m => m === true ? undefined : true)}
-            className={`relative w-10 h-6 rounded-full transition-colors ${meuble ? 'bg-orange-400' : 'bg-gray-200'}`}
-          >
-            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all duration-200 ${meuble ? 'left-[18px]' : 'left-0.5'}`} />
-          </button>
+        <div className="mt-5 relative">
+          <input
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Ville, quartier…"
+            className="w-full h-12 rounded-full bg-white/10 border border-blue-300/30 px-5 font-syne text-sm text-white placeholder:text-blue-300 focus:outline-none focus:border-orange-400"
+          />
         </div>
-      </div>
 
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : !logements?.length ? (
-        <EmptyState
-          title="Aucun logement trouvé"
-          description="Essaie d'ajuster les filtres de recherche."
-        />
-      ) : (
-        <div className="space-y-4">
-          {logements.map(logement => (
-            <LogementCard
-              key={logement.id_logement}
-              logement={logement}
-              action={
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    setSelectedLogement(logement);
-                    setSelectedGroupeId(monGroupe?.id_group ?? '');
-                  }}
-                  className="w-full"
-                >
-                  Postuler
-                </Button>
-              }
-            />
+        <div className="flex gap-2 mt-4 overflow-x-auto">
+          {meubleFilters.map(t => (
+            <button
+              key={t}
+              onClick={() => setMeubleTab(t)}
+              className={`px-4 py-2 rounded-full font-syne font-medium text-xs whitespace-nowrap transition ${
+                meubleTab === t
+                  ? 'bg-orange-400 text-dark-blue'
+                  : 'border border-blue-300/40 text-blue-300'
+              }`}
+            >
+              {t}
+            </button>
           ))}
+          <input
+            type="number"
+            placeholder="Prix max €"
+            value={prixMax}
+            onChange={e => setPrixMax(e.target.value)}
+            className="ml-auto w-28 h-9 rounded-full bg-white/10 border border-blue-300/30 px-4 font-syne text-xs text-white placeholder:text-blue-300 focus:outline-none focus:border-orange-400"
+          />
         </div>
-      )}
+      </header>
+
+      <main className="px-6 py-5">
+        {isLoading && (
+          <p className="text-center text-[#606060] font-syne py-12">Chargement…</p>
+        )}
+        {error && (
+          <p className="text-center text-red-600 font-syne text-sm py-12">
+            Impossible de charger les logements.
+          </p>
+        )}
+
+        <ul className="space-y-4">
+          {logements?.map(l => (
+            <li
+              key={l.id_logement}
+              className="rounded-2xl border border-blue-100 overflow-hidden shadow-sm"
+            >
+              <div className="h-36 bg-[#D9D9D9] relative flex items-center justify-center">
+                <span className="font-syne font-bold text-2xl text-gray-400">
+                  {l.ville.charAt(0).toUpperCase()}
+                </span>
+                <span className="absolute top-3 left-3 px-2 py-1 rounded-full bg-[#29B95E] text-white font-syne font-bold text-[10px]">
+                  Disponible
+                </span>
+                {l.meuble && (
+                  <span className="absolute top-3 right-3 px-2 py-1 rounded-full bg-orange-400 text-dark-blue font-syne font-bold text-[10px]">
+                    Meublé
+                  </span>
+                )}
+              </div>
+              <div className="p-4">
+                <h3 className="font-syne font-bold text-base text-dark-blue">
+                  {l.ville}{l.quartier ? ` — ${l.quartier}` : ''}
+                </h3>
+                <p className="font-inter text-xs text-[#606060] mt-1">
+                  {l.code_postal}{l.superficie ? ` · ${l.superficie} m²` : ''}
+                  {l.etage != null ? ` · Étage ${l.etage}` : ''}
+                </p>
+                <div className="flex items-center justify-between mt-3">
+                  <span className="font-syne font-extrabold text-lg text-dark-blue">
+                    {l.prix} €/mois
+                  </span>
+                  <button
+                    onClick={() => {
+                      setSelectedLogement(l);
+                      setSelectedGroupeId(monGroupe?.id_group ?? '');
+                    }}
+                    className="px-4 py-2 rounded-full bg-dark-blue text-white font-syne font-bold text-xs"
+                  >
+                    Postuler
+                  </button>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {!isLoading && !error && !logements?.length && (
+          <EmptyState title="Aucun logement trouvé" description="Essaie d'ajuster les filtres." />
+        )}
+      </main>
 
       <Modal
         isOpen={!!selectedLogement}
@@ -136,7 +174,7 @@ export default function Recherche() {
                 value={message}
                 onChange={e => setMessage(e.target.value)}
                 rows={3}
-                placeholder="Présentez-vous..."
+                placeholder="Présentez-vous…"
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
               />
             </div>
@@ -145,7 +183,7 @@ export default function Recherche() {
               disabled={addCandidature.isPending || !selectedGroupeId}
               className="w-full"
             >
-              {addCandidature.isPending ? 'Envoi...' : 'Envoyer la candidature'}
+              {addCandidature.isPending ? 'Envoi…' : 'Envoyer la candidature'}
             </Button>
           </div>
         )}

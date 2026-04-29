@@ -10,6 +10,7 @@ import Profil from './pages/Profil';
 import MesLogements from './pages/MesLogements';
 import LogementForm from './pages/LogementForm';
 import Candidatures from './pages/Candidatures';
+import HomeConnected from './pages/HomeConnected';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
+      { path: '/accueil', element: <HomeConnected /> },
       { path: '/recherche', element: <Recherche /> },
       { path: '/profils', element: <Profils /> },
       { path: '/groupes', element: <Groupes /> },

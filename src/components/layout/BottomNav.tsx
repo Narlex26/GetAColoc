@@ -2,37 +2,39 @@ import { NavLink } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth';
 
 const locataireLinks = [
-  { to: '/recherche', label: 'Recherche', icon: '🔍' },
-  { to: '/profils', label: 'Profils', icon: '👥' },
-  { to: '/groupes', label: 'Groupe', icon: '🏠' },
-  { to: '/messages', label: 'Messages', icon: '💬' },
-  { to: '/profil', label: 'Profil', icon: '👤' },
+  { to: '/recherche', label: 'Recherche' },
+  { to: '/profils', label: 'Profils' },
+  { to: '/groupes', label: 'Groupe' },
+  { to: '/messages', label: 'Messages' },
+  { to: '/profil', label: 'Profil' },
 ];
 
 const proprietaireLinks = [
-  { to: '/mes-logements', label: 'Logements', icon: '🏘️' },
-  { to: '/messages', label: 'Messages', icon: '💬' },
-  { to: '/profil', label: 'Profil', icon: '👤' },
+  { to: '/mes-logements', label: 'Logements' },
+  { to: '/messages', label: 'Messages' },
+  { to: '/profil', label: 'Profil' },
 ];
 
 export default function BottomNav() {
   const user = useAuthStore(s => s.user);
   const links = user?.type === 'proprietaire' ? proprietaireLinks : locataireLinks;
+  const cols = links.length === 3 ? 'grid-cols-3' : 'grid-cols-5';
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50">
+    <nav className={`fixed bottom-0 inset-x-0 max-w-md mx-auto bg-white border-t border-black/10 px-4 py-3 grid ${cols} text-center z-50`}>
       {links.map(link => (
         <NavLink
           key={link.to}
           to={link.to}
           className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 text-xs px-2 py-1 ${
-              isActive ? 'text-dark-blue font-bold' : 'text-gray-400'
-            }`
+            `font-inter font-semibold text-[10px] ${isActive ? 'text-dark-blue' : 'text-[#606060]'}`
           }
         >
-          <span className="text-xl">{link.icon}</span>
-          <span>{link.label}</span>
+          {({ isActive }) => (
+            <span className={isActive ? 'inline-block px-2 py-1 rounded bg-blue-300/50' : ''}>
+              {link.label}
+            </span>
+          )}
         </NavLink>
       ))}
     </nav>

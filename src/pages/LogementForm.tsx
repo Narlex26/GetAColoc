@@ -1,9 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLogement, useCreateLogement, useUpdateLogement } from '../hooks/useLogements';
 import FormField from '../components/common/FormField';
 import Button from '../components/common/Button';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+
+const emptyForm = {
+  code_postal: '',
+  ville: '',
+  quartier: '',
+  prix: '',
+  superficie: '',
+  etage: '',
+  meuble: false,
+};
 
 export default function LogementForm() {
   const navigate = useNavigate();
@@ -15,33 +25,23 @@ export default function LogementForm() {
   const createLogement = useCreateLogement();
   const updateLogement = useUpdateLogement(logementId);
 
-  const [form, setForm] = useState({
-    code_postal: '',
-    ville: '',
-    quartier: '',
-    prix: '',
-    superficie: '',
-    etage: '',
-    meuble: false,
-  });
+  const [overrides, setOverrides] = useState<Partial<typeof emptyForm>>({});
 
-  useEffect(() => {
-    if (existing && isEdit) {
-      setForm({
-        code_postal: existing.code_postal,
-        ville: existing.ville,
-        quartier: existing.quartier ?? '',
-        prix: existing.prix.toString(),
-        superficie: existing.superficie ?? '',
-        etage: existing.etage?.toString() ?? '',
-        meuble: existing.meuble,
-      });
-    }
-  }, [existing, isEdit]);
+  const form = isEdit && existing
+    ? {
+        code_postal: overrides.code_postal ?? existing.code_postal,
+        ville: overrides.ville ?? existing.ville,
+        quartier: overrides.quartier ?? (existing.quartier ?? ''),
+        prix: overrides.prix ?? existing.prix.toString(),
+        superficie: overrides.superficie ?? (existing.superficie ?? ''),
+        etage: overrides.etage ?? (existing.etage?.toString() ?? ''),
+        meuble: overrides.meuble ?? existing.meuble,
+      }
+    : { ...emptyForm, ...overrides };
 
   const set = (field: string) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
-      setForm(f => ({ ...f, [field]: e.target.value }));
+      setOverrides(prev => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +93,7 @@ export default function LogementForm() {
           <span className="text-sm font-syne font-medium text-dark-blue">Meublé</span>
           <button
             type="button"
-            onClick={() => setForm(f => ({ ...f, meuble: !f.meuble }))}
+            onClick={() => setOverrides(prev => ({ ...prev, meuble: !form.meuble }))}
             className={`relative w-10 h-6 rounded-full transition-colors ${form.meuble ? 'bg-orange-400' : 'bg-gray-200'}`}
           >
             <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all duration-200 ${form.meuble ? 'left-[18px]' : 'left-0.5'}`} />

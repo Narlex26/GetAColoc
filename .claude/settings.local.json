@@ -8,7 +8,12 @@
       "Bash(cp -R /tmp/gac-scaffold/. /Users/alexandreboyer/IdeaProjects/GetAColoc/)",
       "Bash(npm install:*)",
       "Bash(npx tailwindcss:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(git merge *)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(git stash *)",
+      "Bash(git log *)"
     ]
   }
 }

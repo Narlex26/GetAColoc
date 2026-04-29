@@ -37,7 +37,7 @@ export default function HowItWorksSection() {
             De zéro à ta coloc en 4 étapes
           </h2>
           <p className="text-base sm:text-lg text-blue-400 font-syne font-semibold max-w-md">
-            Basé sur 60 + critères croisés entre profils
+            Simple, rapide, efficace.
           </p>
         </div>
 

@@ -1,69 +1,54 @@
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 
+const stats = [
+  { value: '2.4k', label: 'Profils inscrits' },
+  { value: '340', label: 'Groupes actifs' },
+  { value: '87%', label: 'Taux de match' },
+];
+
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen bg-gradient-to-b from-dark-blue to-dark-blue pt-16 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Decorative gradient background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-orange-400 rounded-full blur-3xl"></div>
-      </div>
+    <section className="bg-dark-blue text-white" style={{
+      background: 'radial-gradient(ellipse at top left, rgba(255,189,89,.2), transparent 40%), radial-gradient(ellipse at bottom right, rgba(255,189,89,.2), transparent 40%), #273F6D',
+    }}>
+      <div className="max-w-md mx-auto px-10 py-14">
+        <span className="inline-block bg-orange-400 bg-opacity-40 border border-white border-opacity-30 text-orange-400 text-xs font-medium px-4 py-1.5 rounded-full mb-6">
+          ✨ Bêta gratuite — Rejoins-nous
+        </span>
 
-      <div className="relative max-w-md mx-auto lg:max-w-2xl">
-        {/* Header Navigation */}
-        <div className="flex items-center justify-between mb-12 sm:mb-16">
-          <div className="flex items-center gap-2">
-            <img
-              src="/favicon.svg"
-              alt="Get A Coloc"
-              className="w-10 h-10 rounded-lg"
-            />
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Link to="/connexion" className="text-white text-sm sm:text-base font-syne hover:opacity-70">
-              Connexion
-            </Link>
-            <Link
-              to="/inscription"
-              className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 font-syne font-bold rounded-full border-2 border-white/50 text-white hover:bg-white hover:text-dark-blue transition-colors"
-            >
-              S'inscrire
-            </Link>
-          </div>
+        <h1 className="text-4xl font-syne font-extrabold leading-tight">
+          Trouve ta<br />
+          <span className="text-orange-400">coloc idéale.</span>
+        </h1>
+
+        <p className="mt-6 text-white text-opacity-70 font-syne font-medium text-lg">
+          Connecte-toi avec des colocataires compatibles grâce à l'IA, crée ton groupe et postule ensemble à vos logements coup de cœur.
+        </p>
+
+        <div className="mt-10 flex flex-col gap-3">
+          <Link to="/inscription">
+            <Button size="lg" className="w-full">
+              Créer mon profil gratuitement
+            </Button>
+          </Link>
+          <Link to="/connexion">
+            <Button variant="secondary" size="lg" className="w-full">
+              Comment ça marche ?
+            </Button>
+          </Link>
         </div>
 
-        {/* Main Hero Content */}
-        <div className="space-y-8 sm:space-y-12">
-          {/* Badge */}
-          <div className="inline-block px-4 py-2 rounded-3xl border border-white border-opacity-30 bg-orange-400 bg-opacity-40 text-orange-400 text-xs sm:text-sm font-syne font-medium">
-            ✨ Bêta gratuite — Rejoins-nous
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-syne font-black leading-tight">
-            <span className="text-white">Trouve ta</span>
-            <br />
-            <span className="text-orange-400">coloc idéale.</span>
-          </h1>
-
-          {/* Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-white text-opacity-70 font-syne font-medium max-w-lg">
-            Connecte-toi avec des colocataires compatibles grâce à l'IA, crée ton groupe et postule ensemble à vos logements coup de cœur.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col gap-4 sm:gap-3 max-w-lg pt-4">
-            <Link to="/inscription">
-              <Button size="lg" className="w-full sm:w-auto">
-                Créer mon profil gratuitement
-              </Button>
-            </Link>
-            <Link to="/connexion">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                Comment ça marche ?
-              </Button>
-            </Link>
-          </div>
+        <div className="grid grid-cols-3 gap-2 mt-10">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-md border border-white border-opacity-10 bg-white bg-opacity-10 py-3 text-center"
+            >
+              <div className="text-orange-400 font-syne font-extrabold text-lg">{stat.value}</div>
+              <div className="text-white text-opacity-80 text-xs font-syne font-medium mt-0.5">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

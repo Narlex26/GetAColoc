@@ -21,7 +21,7 @@ const features: Feature[] = [
   {
     icon: '💬',
     title: 'Messagerie intégrée',
-    description: 'Forme ton équipe et postule ensemble à des logements. Plus de force, plus de chances.',
+    description: "Échange directement avec tes futurs colocs avant de t'engager.",
   },
   {
     icon: '🏠',

@@ -1,5 +1,5 @@
+import Navbar from '../components/home/Navbar';
 import HeroSection from '../components/home/HeroSection';
-import StatsSection from '../components/home/StatsSection';
 import FeaturesSection from '../components/home/FeaturesSection';
 import CriteriaSection from '../components/home/CriteriaSection';
 import MatchingSection from '../components/home/MatchingSection';
@@ -10,8 +10,8 @@ import Footer from '../components/home/Footer';
 export default function Home() {
   return (
     <div className="w-full overflow-hidden">
+      <Navbar />
       <HeroSection />
-      <StatsSection />
       <FeaturesSection />
       <CriteriaSection />
       <MatchingSection />

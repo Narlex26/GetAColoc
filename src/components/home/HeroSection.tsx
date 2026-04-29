@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 
 export default function HeroSection() {
@@ -19,12 +20,15 @@ export default function HeroSection() {
             />
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
-            <button className="text-white text-sm sm:text-base font-syne">
+            <Link to="/connexion" className="text-white text-sm sm:text-base font-syne hover:opacity-70">
               Connexion
-            </button>
-            <Button variant="outline" size="sm" className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5">
+            </Link>
+            <Link
+              to="/inscription"
+              className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 font-syne font-bold rounded-full border-2 border-white/50 text-white hover:bg-white hover:text-dark-blue transition-colors"
+            >
               S'inscrire
-            </Button>
+            </Link>
           </div>
         </div>
 
@@ -49,12 +53,16 @@ export default function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-4 sm:gap-3 max-w-lg pt-4">
-            <Button size="lg" className="w-full sm:w-auto">
-              Créer mon profil gratuitement
-            </Button>
-            <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-              Comment ça marche ?
-            </Button>
+            <Link to="/inscription">
+              <Button size="lg" className="w-full sm:w-auto">
+                Créer mon profil gratuitement
+              </Button>
+            </Link>
+            <Link to="/connexion">
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                Comment ça marche ?
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

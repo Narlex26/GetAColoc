@@ -1,17 +1,20 @@
+export type UserType = 'locataire' | 'proprietaire';
+export type Sexe = 'M' | 'F' | 'A';
+
 export interface Utilisateur {
   id_user: number;
   mail: string;
   telephone?: string;
   nom: string;
   prenom: string;
-  type: 'locataire' | 'proprietaire';
+  type: UserType;
   date_creation?: string;
 }
 
 export interface Locataire extends Utilisateur {
   id_locataire: number;
   age?: number;
-  sexe?: 'M' | 'F' | 'A';
+  sexe?: Sexe;
   description?: string;
 }
 

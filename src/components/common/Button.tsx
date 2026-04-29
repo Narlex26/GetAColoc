@@ -21,7 +21,7 @@ export default function Button({
   const variantStyles = {
     primary: 'bg-orange-400 hover:bg-orange-500 text-dark-blue',
     secondary: 'bg-transparent text-white border border-orange-400 hover:bg-orange-400 hover:text-dark-blue',
-    outline: 'border border-dark-blue text-dark-blue bg-dark-blue hover:opacity-90',
+    outline: 'border-2 border-dark-blue text-dark-blue bg-transparent hover:bg-dark-blue hover:text-white',
   };
 
   const sizeStyles = {

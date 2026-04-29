@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { Utilisateur } from '../types';
+import type { Utilisateur, UserType, Sexe } from '../types';
 
 export interface LoginPayload {
   mail: string;
@@ -11,10 +11,10 @@ export interface RegisterPayload {
   password: string;
   nom: string;
   prenom: string;
-  type: 'locataire' | 'proprietaire';
+  type: UserType;
   telephone?: string;
   age?: number;
-  sexe?: 'M' | 'F' | 'A';
+  sexe?: Sexe;
   description?: string;
 }
 

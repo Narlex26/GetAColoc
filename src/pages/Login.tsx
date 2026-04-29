@@ -6,7 +6,7 @@ import { useAuthStore } from "../store/auth";
 export default function Login() {
   const navigate = useNavigate();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
 
@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     setErr(null);
     try {
-      const res = await authApi.login({ email, password });
+      const res = await authApi.login({ mail, password });
       setAuth(res.access_token, res.user);
       navigate("/");
     } catch {
@@ -27,7 +27,7 @@ export default function Login() {
       <h1 className="text-2xl font-bold mb-6">Connexion</h1>
       <form onSubmit={onSubmit} className="space-y-4">
         <input className="w-full border rounded p-2" type="email" placeholder="Email"
-          value={email} onChange={(e) => setEmail(e.target.value)} required />
+          value={mail} onChange={(e) => setMail(e.target.value)} required />
         <input className="w-full border rounded p-2" type="password" placeholder="Mot de passe"
           value={password} onChange={(e) => setPassword(e.target.value)} required />
         {err && <p className="text-red-600 text-sm">{err}</p>}

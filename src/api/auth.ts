@@ -1,11 +1,34 @@
-import { api } from "./client";
+import { api } from './client';
+import type { Utilisateur } from '../types';
 
-export interface LoginPayload { email: string; password: string; }
-export interface RegisterPayload { email: string; password: string; nom?: string; prenom?: string; }
-export interface AuthResponse { access_token: string; user?: unknown; }
+export interface LoginPayload {
+  mail: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  mail: string;
+  password: string;
+  nom: string;
+  prenom: string;
+  type: 'locataire' | 'proprietaire';
+  telephone?: string;
+  age?: number;
+  sexe?: 'M' | 'F' | 'A';
+  description?: string;
+}
+
+export interface LoginResponse {
+  access_token: string;
+  refresh_token?: string;
+  user: Utilisateur;
+  message?: string;
+}
 
 export const authApi = {
-  login: (data: LoginPayload) => api.post<AuthResponse>("/auth/login", data).then((r) => r.data),
-  register: (data: RegisterPayload) => api.post<AuthResponse>("/auth/register", data).then((r) => r.data),
-  me: () => api.get("/auth/me").then((r) => r.data),
+  login: (data: LoginPayload) =>
+    api.post<LoginResponse>('/auth/login', data).then(r => r.data),
+  register: (data: RegisterPayload) =>
+    api.post<{ message: string; user: Utilisateur }>('/auth/register', data).then(r => r.data),
+  me: () => api.get<Utilisateur>('/auth/me').then(r => r.data),
 };

@@ -1,10 +1,11 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import type { Utilisateur } from '../types';
 
 interface AuthState {
   token: string | null;
-  user: unknown | null;
-  setAuth: (token: string, user?: unknown) => void;
+  user: Utilisateur | null;
+  setAuth: (token: string, user: Utilisateur) => void;
   logout: () => void;
 }
 
@@ -13,9 +14,9 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       token: null,
       user: null,
-      setAuth: (token, user) => set({ token, user: user ?? null }),
+      setAuth: (token, user) => set({ token, user }),
       logout: () => set({ token: null, user: null }),
     }),
-    { name: "gac-auth" }
+    { name: 'gac-auth' }
   )
 );
